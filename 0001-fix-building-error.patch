@@ -1,0 +1,67 @@
+From eae5e193d50494616d983600ca014b801d75e32f Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Thu, 7 May 2020 14:16:56 +0800
+Subject: [PATCH 2/2] 2
+
+---
+ misc/dde-daemon/gesture.json | 9 ---------
+ system/gesture/core.c        | 5 +++++
+ 2 files changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/misc/dde-daemon/gesture.json b/misc/dde-daemon/gesture.json
+index 73a3d7e..fbcc8fd 100644
+--- a/misc/dde-daemon/gesture.json
++++ b/misc/dde-daemon/gesture.json
+@@ -53,15 +53,6 @@
+             "Action": "ShowWindow"
+         }
+     },
+-    {
+-        "Name": "tap",
+-        "Direction": "none",
+-        "Fingers": 3,
+-        "Action": {
+-            "Type": "built-in",
+-            "Action": "MoveWindow"
+-        }
+-    },
+     {
+         "Name": "swipe",
+         "Direction": "up",
+diff --git a/system/gesture/core.c b/system/gesture/core.c
+index f953cc1..ab1ffdf 100644
+--- a/system/gesture/core.c
++++ b/system/gesture/core.c
+@@ -305,6 +305,7 @@ handle_gesture_events(struct libinput_event *ev, int type)
+         }
+         raw_event_reset(raw);
+         break;
++#if 0
+     case LIBINPUT_EVENT_GESTURE_TAP_BEGIN:
+         break;
+     case LIBINPUT_EVENT_GESTURE_TAP_END:
+@@ -315,6 +316,7 @@ handle_gesture_events(struct libinput_event *ev, int type)
+         g_debug("[Tap] fingers: %d", raw->fingers);
+         handleGestureEvent(GESTURE_TYPE_TAP, GESTURE_DIRECTION_NONE, raw->fingers);
+         break;
++#endif
+     }
+ }
+ 
+@@ -432,10 +434,13 @@ handle_events(struct libinput *li)
+         case LIBINPUT_EVENT_GESTURE_PINCH_END:
+         case LIBINPUT_EVENT_GESTURE_SWIPE_BEGIN:
+         case LIBINPUT_EVENT_GESTURE_SWIPE_UPDATE:
++#if 0
+         case LIBINPUT_EVENT_GESTURE_SWIPE_END:
+         case LIBINPUT_EVENT_GESTURE_TAP_BEGIN:
+         case LIBINPUT_EVENT_GESTURE_TAP_UPDATE:
+         case LIBINPUT_EVENT_GESTURE_TAP_END:{
++#endif
++	case LIBINPUT_EVENT_GESTURE_SWIPE_END:{
+             handle_gesture_events(ev, type);
+             break;
+         }
+-- 
+2.18.2
+
