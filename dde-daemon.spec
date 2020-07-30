@@ -204,5 +204,5 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
-* Thu May 28 2020 uoser <uoser@uniontech.com> - 5.9.4-2
-- Project init.
+* Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-5
+- Package init
