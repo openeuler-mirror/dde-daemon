@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.10.0.23
-Release:        5
+Release:        6
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -26,29 +26,10 @@ BuildRequires:  fontpackages-devel
 BuildRequires:  librsvg2-tools
 BuildRequires:  pam-devel >= 1.3.1
 BuildRequires:  pam >= 1.3.1
-BuildRequires:  golang-github-linuxdeepin-go-x11-client-devel
-BuildRequires:  golang-golang-org-net-devel
 BuildRequires:  glib2-devel
 BuildRequires:  gtk3-devel
 BuildRequires:  systemd-devel
-BuildRequires:  golang-github-axgle-mahonia-devel
-BuildRequires:  golang-golang-x-xerrors-devel
-BuildRequires:  golang-gopkg-alecthomas-kingpin-devel
 BuildRequires:  dde-api-devel
-BuildRequires:  golang.org-x-image-devel
-BuildRequires:  text-devel
-BuildRequires:  resize-devel
-BuildRequires:  golang-github-teambition-rrule-go-devel
-BuildRequires:  golang-github-rickb777-date-devel
-BuildRequires:  golang-github-mozillazg-go-pinyin-devel
-BuildRequires:  golang-github-kelvins-sunrisesunset-devel
-BuildRequires:  gorm-devel
-BuildRequires:  golang-github-cryptix-wav-devel
-BuildRequires:  golang-github-mattn-go-sqlite3-devel
-BuildRequires:  golang-github-alecthomas-template-devel
-BuildRequires:  inflection-devel
-BuildRequires:  golang-github-rickb777-plural-devel
-BuildRequires:  golang-github-alecthomas-units-devel
 BuildRequires:  alsa-lib-devel
 BuildRequires:  alsa-lib
 BuildRequires:  pulseaudio-libs-devel
@@ -58,16 +39,10 @@ BuildRequires:  libnl3-devel
 BuildRequires:  libnl3
 BuildRequires:  libgudev-devel
 BuildRequires:  libgudev
-BuildRequires:  golang-github-davecgh-go-spew-devel
 BuildRequires:  libinput-devel
 BuildRequires:  libinput
-BuildRequires:  golang-github-gosexy-gettext-devel
 BuildRequires:  librsvg2-devel
 BuildRequires:  librsvg2
-BuildRequires:  golang-github-msteinert-pam-devel
-BuildRequires:  go-lib-devel
-BuildRequires:  golang-github-linuxdeepin-go-dbus-factory-devel
-BuildRequires:  deepin-gir-generator
 BuildRequires:  libXcursor-devel
 
 Requires:       bluez-libs
@@ -135,12 +110,11 @@ sed -i 's/google-chrome/chromium-browser/g' misc/dde-daemon/mime/data.json
 
 %build
 BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
-export GOPATH=/usr/share/gocode
+export GOPATH=/usr/share/gocode:%{_builddir}/%{name}-%{version}-%{release_name}/vendor
 %make_build GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
-#make GOPATH=/usr/share/gocode
 
 %install
-export GOPATH=/usr/share/gocode
+export GOPATH=/usr/share/gocode:%{_builddir}/%{name}-%{version}-%{release_name}/vendor
 %make_install
 
 # fix systemd/logind config
@@ -204,5 +178,7 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-6
+- remove golang devel
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-5
 - Package init
