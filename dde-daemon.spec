@@ -12,14 +12,14 @@
 
 Name:           dde-daemon
 Version:        5.10.0.23
-Release:        6
+Release:        7
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}-%{release_name}.orig.tar.xz
 Patch0:         0001-fix-building-error.patch
 
-BuildRequires:  python37
+BuildRequires:  python3
 BuildRequires:  compiler(go-compiler)
 BuildRequires:  deepin-gettext-tools
 BuildRequires:  fontpackages-devel
@@ -178,6 +178,8 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Wed Aug 19 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-7
+- change python37 to python3
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-6
 - remove golang devel
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-5
