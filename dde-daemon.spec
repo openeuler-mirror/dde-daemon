@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.10.0.23
-Release:        7
+Release:        8
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -29,7 +29,6 @@ BuildRequires:  pam >= 1.3.1
 BuildRequires:  glib2-devel
 BuildRequires:  gtk3-devel
 BuildRequires:  systemd-devel
-BuildRequires:  dde-api-devel
 BuildRequires:  alsa-lib-devel
 BuildRequires:  alsa-lib
 BuildRequires:  pulseaudio-libs-devel
@@ -110,8 +109,8 @@ sed -i 's/google-chrome/chromium-browser/g' misc/dde-daemon/mime/data.json
 
 %build
 BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
-export GOPATH=/usr/share/gocode:%{_builddir}/%{name}-%{version}-%{release_name}/vendor
-%make_build GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
+export GOPATH=%{_builddir}/%{name}-%{version}-%{release_name}/vendor
+%make_build GOBUILD="go build -mod=vendor -compiler gc -ldflags \"-B $BUILDID\""
 
 %install
 export GOPATH=/usr/share/gocode:%{_builddir}/%{name}-%{version}-%{release_name}/vendor
@@ -178,6 +177,8 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Wed Sep 2 2020 chenbo pan <panchenbo@uniontech.com> - 5.10.0.23-8
+- fix requires golang devel
 * Wed Aug 19 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-7
 - change python37 to python3
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-6
