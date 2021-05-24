@@ -12,15 +12,15 @@
 
 Name:           dde-daemon
 Version:        5.10.0.23
-Release:        8
+Release:        10
 Summary:        Daemon handling the DDE session settings
-License:        GPLv3
+License:        GPLv2 and MIT
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}-%{release_name}.orig.tar.xz
 Patch0:         0001-fix-building-error.patch
 
 BuildRequires:  python3
-BuildRequires:  compiler(go-compiler)
+BuildRequires:  golang
 BuildRequires:  deepin-gettext-tools
 BuildRequires:  fontpackages-devel
 BuildRequires:  librsvg2-tools
@@ -177,6 +177,11 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Thu Mar 04 2021 weidong <weidong@uniontech.com> - 5.10.0.23-10
+- Update license.
+
+* Thu Feb 18 2021 chenbo pan <panchenbo@uniontech.com> - 5.10.0.23-9
+- fix build error
 * Wed Sep 2 2020 chenbo pan <panchenbo@uniontech.com> - 5.10.0.23-8
 - fix requires golang devel
 * Wed Aug 19 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-7
