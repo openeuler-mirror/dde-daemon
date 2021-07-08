@@ -11,13 +11,14 @@
 %global release_name server-industry
 
 Name:           dde-daemon
-Version:        5.10.0.23
-Release:        10
+Version:        5.12.0.18
+Release:        1
 Summary:        Daemon handling the DDE session settings
-License:        GPLv2 and MIT
+License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
-Source0:        %{name}-%{version}-%{release_name}.orig.tar.xz
-Patch0:         0001-fix-building-error.patch
+Source0:        %{name}-%{version}.orig.tar.xz
+Source1:	vendor.tar.gz	
+
 
 BuildRequires:  python3
 BuildRequires:  golang
@@ -43,6 +44,7 @@ BuildRequires:  libinput
 BuildRequires:  librsvg2-devel
 BuildRequires:  librsvg2
 BuildRequires:  libXcursor-devel
+BuildRequires:  pkgconfig(sqlite3)
 
 Requires:       bluez-libs
 Requires:       deepin-desktop-base
@@ -63,8 +65,9 @@ Recommends:     google-noto-sans-fonts
 Daemon handling the DDE session settings
 
 %prep
-%setup -q -n %{name}-%{version}-%{release_name}
-%patch0 -p1
+%autosetup
+tar -xf %{SOURCE1}
+patch langselector/locale.go < rpm/locale.go.patch
 
 # Fix library exec path
 sed -i '/deepin/s|lib|libexec|' Makefile
@@ -110,11 +113,13 @@ sed -i 's/google-chrome/chromium-browser/g' misc/dde-daemon/mime/data.json
 %build
 BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
 export GOPATH=%{_builddir}/%{name}-%{version}-%{release_name}/vendor
-%make_build GOBUILD="go build -mod=vendor -compiler gc -ldflags \"-B $BUILDID\""
+%make_build GO_BUILD_FLAGS=-trimpath GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
+
 
 %install
-export GOPATH=/usr/share/gocode:%{_builddir}/%{name}-%{version}-%{release_name}/vendor
-%make_install
+BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
+export GOPATH=/usr/share/gocode
+%make_install PAM_MODULE_DIR=%{_libdir}/security GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
 
 # fix systemd/logind config
 install -d %{buildroot}/usr/lib/systemd/logind.conf.d/
@@ -123,9 +128,6 @@ cat > %{buildroot}/usr/lib/systemd/logind.conf.d/10-%{sname}.conf <<EOF
 HandlePowerKey=ignore
 HandleSuspendKey=ignore
 EOF
-
-install -d %{buildroot}/%{_libdir}/security/
-install -Dm755 %{buildroot}/pam_deepin_auth.so %{buildroot}/%{_libdir}/security/pam_deepin_auth.so
 
 %find_lang %{name}
 
@@ -177,6 +179,9 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Thu Jul 08 2021 weidong <weidong@uniontech.com> - 5.12.0.18-1
+- Update 5.12.0.18.
+
 * Thu Mar 04 2021 weidong <weidong@uniontech.com> - 5.10.0.23-10
 - Update license.
 
@@ -190,3 +195,4 @@ fi
 - remove golang devel
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 5.10.0.23-5
 - Package init
+
