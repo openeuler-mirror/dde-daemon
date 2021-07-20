@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.12.0.18
-Release:        1
+Release:        2
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -48,6 +48,7 @@ BuildRequires:  pkgconfig(sqlite3)
 
 Requires:       bluez-libs
 Requires:       deepin-desktop-base
+Suggests:	deepin-desktop-server
 Requires:       deepin-desktop-schemas
 Requires:       dde-session-ui
 Requires:       dde-polkit-agent
@@ -179,6 +180,9 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Tue Jul 20 2021 weidong <weidong@uniontech.com> - 5.12.0.18-2
+- Suggest use deepin-desktop-server to provide deepin-desktop-base.
+
 * Thu Jul 08 2021 weidong <weidong@uniontech.com> - 5.12.0.18-1
 - Update 5.12.0.18.
 
