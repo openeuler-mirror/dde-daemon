@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.12.0.18
-Release:        2
+Release:        3
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -180,6 +180,9 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Thu Aug 26 2021 heyitao <heyitao@uniontech.com> - 5.12.0.18-3
+- Update vendor.tag.gz.
+
 * Tue Jul 20 2021 weidong <weidong@uniontech.com> - 5.12.0.18-2
 - Suggest use deepin-desktop-server to provide deepin-desktop-base.
 
