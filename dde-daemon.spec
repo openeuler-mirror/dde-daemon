@@ -12,12 +12,12 @@
 
 Name:           dde-daemon
 Version:        5.12.0.18
-Release:        3
+Release:        4
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}.orig.tar.xz
-Source1:	vendor.tar.gz	
+Source1:        vendor.tar.gz	
 
 
 BuildRequires:  python3
@@ -33,8 +33,7 @@ BuildRequires:  systemd-devel
 BuildRequires:  alsa-lib-devel
 BuildRequires:  alsa-lib
 BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  gdk-pixbuf2-xlib-devel
-BuildRequires:  gdk-pixbuf2-xlib
+BuildRequires:  gdk-pixbuf-xlib
 BuildRequires:  libnl3-devel
 BuildRequires:  libnl3
 BuildRequires:  libgudev-devel
@@ -48,7 +47,7 @@ BuildRequires:  pkgconfig(sqlite3)
 
 Requires:       bluez-libs
 Requires:       deepin-desktop-base
-Suggests:	deepin-desktop-server
+Suggests:       deepin-desktop-server
 Requires:       deepin-desktop-schemas
 Requires:       dde-session-ui
 Requires:       dde-polkit-agent
@@ -110,6 +109,7 @@ EOF
 
 # Replace reference of google-chrome to chromium-browser
 sed -i 's/google-chrome/chromium-browser/g' misc/dde-daemon/mime/data.json
+go env -w GO111MODULE=auto
 
 %build
 BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
@@ -180,6 +180,9 @@ fi
 /lib/systemd/system/deepin-accounts-daemon.service
 
 %changelog
+* Thu Feb 10 2022 liweigang <liweiganga@uniontech.com> - 5.12.0.18-4
+- fix build error and format spec.
+
 * Thu Aug 26 2021 heyitao <heyitao@uniontech.com> - 5.12.0.18-3
 - Update vendor.tag.gz.
 
