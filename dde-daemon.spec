@@ -12,12 +12,13 @@
 
 Name:           dde-daemon
 Version:        5.12.0.18
-Release:        4
+Release:        5
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}.orig.tar.xz
 Source1:        vendor.tar.gz	
+Source2:        %{sname}.sysusers	
 
 
 BuildRequires:  python3
@@ -122,6 +123,8 @@ BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
 export GOPATH=/usr/share/gocode
 %make_install PAM_MODULE_DIR=%{_libdir}/security GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
 
+install -Dm644 %{SOURCE2} %{buildroot}/usr/lib/sysusers.d/%{sname}.conf
+
 # fix systemd/logind config
 install -d %{buildroot}/usr/lib/systemd/logind.conf.d/
 cat > %{buildroot}/usr/lib/systemd/logind.conf.d/10-%{sname}.conf <<EOF
@@ -178,8 +181,12 @@ fi
 %{_libdir}/security/pam_deepin_auth.so
 /lib/systemd/system/dbus-com.deepin.dde.lockservice.service
 /lib/systemd/system/deepin-accounts-daemon.service
+%{_sysusersdir}/%{sname}.conf
 
 %changelog
+* Tue Mar 08 2022 liweigang <liweiganga@uniontech.com> - 5.12.0.18-5
+- fix install warning
+
 * Thu Feb 10 2022 liweigang <liweiganga@uniontech.com> - 5.12.0.18-4
 - fix build error and format spec.
 
