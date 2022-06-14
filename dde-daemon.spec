@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.12.0.18
-Release:        5
+Release:        6
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -184,6 +184,9 @@ fi
 %{_sysusersdir}/%{sname}.conf
 
 %changelog
+* Fri Jun 10 2022 misaka00251 <misaka00251@misakanet.cn> - 5.12.0.18-6
+- Update golang module sys to latest (9f5ed59) in order to build on RISC-V
+
 * Tue Mar 08 2022 liweigang <liweiganga@uniontech.com> - 5.12.0.18-5
 - fix install warning
 
