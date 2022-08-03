@@ -12,12 +12,13 @@
 
 Name:           dde-daemon
 Version:        5.13.16.11
-Release:        1
+Release:        2
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}.orig.tar.xz
 Source1:        vendor.tar.gz
+Source2:        %{sname}.sysusers	
 
 BuildRequires:  python3
 BuildRequires:  golang
@@ -123,6 +124,8 @@ BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
 export GOPATH=%{_builddir}/%{name}-%{version}/vendor:$GOPATH
 %make_install PAM_MODULE_DIR=%{_libdir}/security GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
 
+install -Dm644 %{SOURCE2} %{buildroot}/usr/lib/sysusers.d/%{sname}.conf
+
 # fix systemd/logind config
 install -d %{buildroot}/usr/lib/systemd/logind.conf.d/
 cat > %{buildroot}/usr/lib/systemd/logind.conf.d/10-%{sname}.conf <<EOF
@@ -176,8 +179,12 @@ fi
 /var/lib/polkit-1/localauthority/10-vendor.d/com.deepin.daemon.Fprintd.pkla
 /lib/systemd/system/dbus-com.deepin.dde.lockservice.service
 /lib/systemd/system/deepin-accounts-daemon.service
+%{_sysusersdir}/%{sname}.conf
 
 %changelog
+* Tue Aug 02 2022 liweiganga <liweiganga@unionttech.com> - 5.13.16.11-2
+- fix install
+
 * Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.13.16.11-1
 - Update to 5.13.16.11
 
