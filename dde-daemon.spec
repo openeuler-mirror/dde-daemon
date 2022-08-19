@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.13.16.11
-Release:        2
+Release:        3
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -182,6 +182,9 @@ fi
 %{_sysusersdir}/%{sname}.conf
 
 %changelog
+* Fri Aug 19 2022 misaka00251 <misaka00251@misakanet.cn> - 5.13.16.11-3
+- Update vendor.tar.gz to build on RISC-V
+
 * Tue Aug 02 2022 liweiganga <liweiganga@unionttech.com> - 5.13.16.11-2
 - fix install
 
