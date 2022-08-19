@@ -11,14 +11,14 @@
 %global release_name server-industry
 
 Name:           dde-daemon
-Version:        5.12.0.18
+Version:        5.13.16.11
 Release:        3
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
 Source0:        %{name}-%{version}.orig.tar.xz
-Source1:	vendor.tar.gz	
-
+Source1:        vendor.tar.gz
+Source2:        %{sname}.sysusers	
 
 BuildRequires:  python3
 BuildRequires:  golang
@@ -33,8 +33,7 @@ BuildRequires:  systemd-devel
 BuildRequires:  alsa-lib-devel
 BuildRequires:  alsa-lib
 BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  gdk-pixbuf2-xlib-devel
-BuildRequires:  gdk-pixbuf2-xlib
+BuildRequires:  gdk-pixbuf-xlib
 BuildRequires:  libnl3-devel
 BuildRequires:  libnl3
 BuildRequires:  libgudev-devel
@@ -44,11 +43,12 @@ BuildRequires:  libinput
 BuildRequires:  librsvg2-devel
 BuildRequires:  librsvg2
 BuildRequires:  libXcursor-devel
+BuildRequires:  libddcutil-devel
 BuildRequires:  pkgconfig(sqlite3)
+BuildRequires:  dde-api-devel
 
 Requires:       bluez-libs
 Requires:       deepin-desktop-base
-Suggests:	deepin-desktop-server
 Requires:       deepin-desktop-schemas
 Requires:       dde-session-ui
 Requires:       dde-polkit-agent
@@ -112,15 +112,19 @@ EOF
 sed -i 's/google-chrome/chromium-browser/g' misc/dde-daemon/mime/data.json
 
 %build
-BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
-export GOPATH=%{_builddir}/%{name}-%{version}-%{release_name}/vendor
-%make_build GO_BUILD_FLAGS=-trimpath GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
+go env -w GO111MODULE=auto
+export GOPATH=%{_builddir}/%{name}-%{version}/vendor:$GOPATH
 
+BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
+%make_build GO_BUILD_FLAGS=-trimpath GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
+#make GOPATH=/usr/share/gocode
 
 %install
 BUILDID="0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n')"
-export GOPATH=/usr/share/gocode
+export GOPATH=%{_builddir}/%{name}-%{version}/vendor:$GOPATH
 %make_install PAM_MODULE_DIR=%{_libdir}/security GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
+
+install -Dm644 %{SOURCE2} %{buildroot}/usr/lib/sysusers.d/%{sname}.conf
 
 # fix systemd/logind config
 install -d %{buildroot}/usr/lib/systemd/logind.conf.d/
@@ -166,20 +170,30 @@ fi
 %{_datadir}/%{name}/
 %{_datadir}/dde/
 %{_datadir}/polkit-1/actions/*.policy
-%{_var}/cache/appearance/
 %{_var}/lib/polkit-1/localauthority/10-vendor.d/com.deepin.daemon.Accounts.pkla
 %{_var}/lib/polkit-1/localauthority/10-vendor.d/com.deepin.daemon.Grub2.pkla
 %{_sysconfdir}/acpi/actions/deepin_lid.sh
 %{_sysconfdir}/acpi/events/deepin_lid
 %{_sysconfdir}/pulse/daemon.conf.d/10-deepin.conf
 /lib/udev/rules.d/80-deepin-fprintd.rules
-%{_datadir}/pam-configs/deepin-auth
 /var/lib/polkit-1/localauthority/10-vendor.d/com.deepin.daemon.Fprintd.pkla
-%{_libdir}/security/pam_deepin_auth.so
 /lib/systemd/system/dbus-com.deepin.dde.lockservice.service
 /lib/systemd/system/deepin-accounts-daemon.service
+%{_sysusersdir}/%{sname}.conf
 
 %changelog
+* Fri Aug 19 2022 misaka00251 <misaka00251@misakanet.cn> - 5.13.16.11-3
+- Update vendor.tar.gz to build on RISC-V
+
+* Tue Aug 02 2022 liweiganga <liweiganga@unionttech.com> - 5.13.16.11-2
+- fix install
+
+* Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.13.16.11-1
+- Update to 5.13.16.11
+
+* Sat Jan 29 2022 liweigang <liweiganga@uniontech.com> - 5.12.0.18-4
+- fix build error and format spec.
+
 * Thu Aug 26 2021 heyitao <heyitao@uniontech.com> - 5.12.0.18-3
 - Update vendor.tag.gz.
 
