@@ -1,6 +1,6 @@
 %global _smp_mflags -j1
 
-%global debug_package   %{nil}
+##%global debug_package   %{nil}
 %global _unpackaged_files_terminate_build 0
 %global _missing_build_ids_terminate_build 0
 %define __debug_install_post   \
@@ -12,7 +12,7 @@
 
 Name:           dde-daemon
 Version:        5.13.16.11
-Release:        2
+Release:        3
 Summary:        Daemon handling the DDE session settings
 License:        GPLv3
 URL:            http://shuttle.corp.deepin.com/cache/tasks/18802/unstable-amd64/
@@ -182,7 +182,10 @@ fi
 %{_sysusersdir}/%{sname}.conf
 
 %changelog
-* Tue Aug 02 2022 liweiganga <liweiganga@unionttech.com> - 5.13.16.11-2
+* Wed Dec 21 2022 liweiganga <liweiganga@uniontech.com> - 5.13.16.11-3
+- enable debuginfo for fix strip
+
+* Tue Aug 02 2022 liweiganga <liweiganga@uniontech.com> - 5.13.16.11-2
 - fix install
 
 * Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.13.16.11-1
