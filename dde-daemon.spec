@@ -1,6 +1,6 @@
 %global _smp_mflags -j1
 
-%global debug_package   %{nil}
+##%global debug_package   %{nil}
 %global _unpackaged_files_terminate_build 0
 %global _missing_build_ids_terminate_build 0
 %define __debug_install_post   \
@@ -182,10 +182,13 @@ fi
 %{_sysusersdir}/%{sname}.conf
 
 %changelog
-* Fri Aug 19 2022 misaka00251 <misaka00251@misakanet.cn> - 5.13.16.11-3
-- Update vendor.tar.gz to build on RISC-V
+* Mon Feb 27 2023 misaka00251 <liuxin@iscas.ac.cn> - 5.13.16.11-3
+- Merge upstream & Update vendor.tar.gz to build on RISC-V
 
-* Tue Aug 02 2022 liweiganga <liweiganga@unionttech.com> - 5.13.16.11-2
+* Wed Dec 21 2022 liweiganga <liweiganga@uniontech.com> - 5.13.16.11-3
+- enable debuginfo for fix strip
+
+* Tue Aug 02 2022 liweiganga <liweiganga@uniontech.com> - 5.13.16.11-2
 - fix install
 
 * Mon Jul 18 2022 konglidong <konglidong@uniontech.com> - 5.13.16.11-1
